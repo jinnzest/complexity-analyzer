@@ -13,12 +13,12 @@ class ComplexityRefAnalyzerTest extends FlatSpec with Matchers {
     private val logNInput = "10 23 23 32 32 34 33 45 43 47 47 45 41 45 42 54 51 55 57 53 56 53 59 56 56 56 52 55 55 54 56 68 64 68 70 6700000 63 65 67 61 68 69 67 67 68 65 62 66 70 67 62 65 64 66 68 63 64 64 65 69 67 68 69 79 79 75 76 80 79 77 79 79 77 78 74 77 74 78 75 77 78 80 76 81 81 79 83 77 76 81 76 81 82 79 78 79 75 78 83 82"
     private val in2nInput = "85 43 92 183 360 709 1447 2881000000 5698 11422 22693 45464 90480 183747 368400"
     private val nLogNInput = "14 33 58 94 128 163 191 243 289 347 385 430 475 52800000 567 626 680 767 823 864 928 987 1039 1102 1149 1202 1279 1338 1400 1457 1524 1588 1646 1749 1807 1866 1929 1990 2073 2142 2216 2275 2333 2421 2494 2569 2603 2705 2758 2865 2877 2984 2995 3123 3209 3259 3336 3442 3476 3545 3598 3681 3759 3837 3947 4020 4111 4171 4256 4326 4405 4457 4532 4644 4735 4792 4931 4978 5074 5143 5243 5309 5401 5481 5566 5619 5711 5826 5850 5941 6050 6118 6230 6292 6337 6467 6522 6610 6703 6781"
-    val o1In = extractNumbers(o1Input)
-    val logNIn = extractNumbers(logNInput)
-    val onIn = extractNumbers(onInput)
-    val on2In = extractNumbers(on2Input)
-    val in2nIn = extractNumbers(in2nInput)
-    val nLogN = extractNumbers(nLogNInput)
+    val o1In = extractNumbers(o1Input)::Nil
+    val logNIn = extractNumbers(logNInput)::Nil
+    val onIn = extractNumbers(onInput)::Nil
+    val on2In = extractNumbers(on2Input)::Nil
+    val in2nIn = extractNumbers(in2nInput)::Nil
+    val nLogN = extractNumbers(nLogNInput)::Nil
   }
 
   "ComplexityAnalyzer" should "detect O(1)" in new Fixture {

@@ -2,28 +2,36 @@ package analyzer
 
 object ComplexityAnalyzer {
 
-  def extractNumbers(numbers: String): List[Double] = {
-    numbers.trim.split(raw"\s+").map(_.toDouble).toList
+  def extractNumbers(numbers: String): Seq[Double] = {
+    numbers.trim.split(raw"\s+").map(_.toDouble).toSeq
   }
 
-  def analyze(measurements: List[Double]): Complexity.Value = {
+  def analyze(measurements: Seq[Seq[Double]]): Complexity.Value = {
     import Complexity._
 
-    val lastMeasurement = measurements.last
+    val minSize = measurements.map(_.size).min
 
-    val refM = (1 to measurements.size).map(_.toDouble)
+    val base = 1.0 / measurements.size
+
+    val meanMeasurements = measurements.tail.foldLeft(measurements.head) { (acc, v) =>
+      acc.zip(v).map { case (a, b) => a * b }
+    }.map(v => scala.math.pow(v, base))
+
+    val tailMeasurementsMax = meanMeasurements.drop(meanMeasurements.size / 4 * 3).max
+
+    val refM = (1 to minSize).map(_.toDouble)
 
     def calcDeviation(refAndReal: (Double, Double)) = {
       val (ref, real) = refAndReal
-      if (real > lastMeasurement) 0.0
+      if (real > tailMeasurementsMax) 0.0
       else (ref - real).abs
     }
 
     def findMaxDeviation(ideal: ComplexityRef) = {
-      val scale = measurements.last / ideal.ref.last
+      val scale = meanMeasurements.drop(meanMeasurements.size / 4 * 3).max / ideal.ref.drop(ideal.ref.size / 4 * 3).max
       ideal.ref
         .map(_ * scale)
-        .zip(measurements)
+        .zip(meanMeasurements)
         .map(calcDeviation)
         .max
     }
@@ -39,8 +47,13 @@ object ComplexityAnalyzer {
   }
 
   def main(args: Array[String]): Unit = {
-    val measurementsString = scala.io.StdIn.readLine()
-    if (measurementsString.nonEmpty) println(analyze(extractNumbers(measurementsString)))
+    var measurementsString = scala.io.StdIn.readLine()
+    var measurements: List[Seq[Double]] = Nil
+    while (measurementsString!=null && measurementsString.nonEmpty) {
+      measurements = extractNumbers(measurementsString) :: measurements
+      measurementsString = scala.io.StdIn.readLine()
+    }
+    if (measurements.nonEmpty) println(analyze(measurements))
     else println("empty input")
   }
 }

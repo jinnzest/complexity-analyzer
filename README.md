@@ -4,10 +4,13 @@ To build run: sbt pack
 
 To run analyzer: 
 1. Target/pack/bin/complexity-analyzer(or target/pack/bin/complexity-analyzer.bat on windows).
-2. Input line of numbers and press Enter. 
-Or run: echo "1 2 3 4 " | ./complexity-analyzer
+2. Input the first line of numbers and press Enter, then input the second line of numbers and press Enter etc. 
+Or run: echo "1 2 3 4 
+1 3 3 5
+2 2 3 4" | ./complexity-analyzer
 
 Input numbers should go from left to right for input arguments number.
+Each new line represents the next measurements run. More runs will provide a more exact result.  
 For example sequence 1 4 8 17 24 36 52 61 83 100 means that for N=1 measured time is 1 and for N=10 measured time is 10 and complexity is O(N^2).
 
-The algorithm considers anomalies like 1 4 9 10000 25 36. In the case it returns O(N^2) in spite of 10000 anomaly. 
+The algorithm considers anomalies like 1 4 9 10000 25 36. In the case, it returns O(N^2) in spite of 10000 anomaly measurement. 
